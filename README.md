@@ -7,7 +7,7 @@ I created a grid world, similiar to OpenAI gym's, and implemented basic Q-Learni
 
 # Video
 Describe the Video here
-[![alt text](the.png)](http://  "My Agent Learning to Reach the Green Block")
+[![alt text]()](https://www.youtube.com/watch?v=NLY9B3Y2eho  "My Agent Learning to Reach the Green Block")
 
 
 
