@@ -6,7 +6,7 @@ class grid:
     # Constructor
     def __init__(self, length, width, goalX, goalY):
         
-        self.current_position = np.array([ 0, 0])
+        self.current_position = np.array([0, 0])
         
         # Grid dimensions
         self.length = length
@@ -18,7 +18,12 @@ class grid:
 
         self.goalX = goalX
         self.goalY = goalY
-        self.states = np.zeros( (length, width) ) 
+    
+        self.states = np.zeros( (length, width) )
+        # self.rewards = np.zeros( (length, width) )
+        # This is really just for testing
+        # self.setRewards()
+
         self.isOver = False
     
         # Create a window for us to display the game's state
@@ -29,21 +34,31 @@ class grid:
         
         if ( self.current_position[1] == 0):
             self.isOver = True
-        
+        else:
+            self.current_position[1] = self.current_position[1] - 1
+
     def moveRight(self):
 
         if ( self.current_position[1] == (self.width - 1) ):
             self.isOver = True
+        else:
+            self.current_position[1] = self.current_position[1] + 1
+
 
     def moveDown(self):
         
         if ( self.current_position[0] == (self.length - 1) ):
             self.isOver = True
+        else:
+            self.current_position[0] =  self.current_position[0] + 1
+
 
     def moveUp(self):
 
         if ( self.current_position[0] == 0 ):
             self.isOver = True
+        else:
+            self.current_position[0] = self.current_position[0] - 1
 
     # This method will display the grid world
     def render(self):
@@ -97,9 +112,9 @@ class grid:
     # Take the system from the current state 
     # to the state after doing the given action
     # Input: 
-    # Output: reward, 
+    # Return: reward, isOver 
     def step(self, action):
-        
+       
         if ( action == 0 ):
             self.moveLeft()
         
@@ -112,10 +127,12 @@ class grid:
         elif( action == 3 ):
             self.moveDown()
 
-        # Check for the end of the game  
-        if ( self.isOver == True ):
-            # return, what to do here?
-            pass 
+        # Compute the given reward function
+        reward = 0
+        if ( ( (self.goalY == self.current_position[0] ) and (self.goalX == self.current_position[1] ) ) ):
+            reward = 100
+            
+        return reward, self.isOver
     
 
 
