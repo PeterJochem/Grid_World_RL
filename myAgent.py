@@ -14,93 +14,39 @@ currentX = 6
 currentY = 6
 myGrid = gridWorld.grid(length, width, currentX, currentY, goalX, goalY)
 
-discount = 0.5
+discount = 0.95
+learning_rate = 0.8
 
-# Search
-# Describe leadIntoMove = {-1, 0, 1, 2, 3 }
-def treeExpand(leadIntoMove, depth):
-    
-    # Store the prior state
-    original_location = myGrid.current_position
-    
-    if ( leadIntoMove == 0):
-        myGrid.moveLeft() 
-    
-    elif ( leadIntoMove == 1) :
-        myGrid.moveRight()
-    
-    elif (leadIntoMove == 2):
-        myGrid.moveUp()
-    
-    elif (leadIntoMove == 3)
-        myGrid.moveDown()
-    
-
-                                      # Change to myGrid.currentY, myGrid.currentX
-    left = (discount**depth) * Q_Table[currentY, currentX, 0] 
-
-    right = (discount**depth) * Q_Table[currentY, currentX, 1] 
-
-    up =  (discount**depth) * Q_Table[currentY, currentX, 2] 
-
-    down = (discount**depth) * Q_Table[currentY, currentX, 3]
-    
-    # Undo the move
-    # Double check the order on this
-    myGrid.undoMove(currentY, currentX)
- 
-    # Return the max score - not the max index 
-    max_value = 0
-    if (left == right == up == down):
-        max_value = random.randint(0, 3)
-    else:
-        # Returns the max VALUE in an array
-        max_value = np.amax([left, right, up, down])
-        
-    # This is a reward value - not a move
-    return max_value
- 
+numGames = 100
 
 # Describe here
-def chooseAction(currentX, currentY):
-    
-    # Move left
-    left_current = Q_Table[currentY, currentX, 0] + treeExpand(0, 1)
-
-    # right = Q_Table[currentY, currentX, 1] + (discount * treeExpand() )
-    right =  Q_Table[currentY, currentX, 1] + treeExpand(1, 1)
-
-    up =  Q_Table[currentY, currentX, 1] + treeExpand(2, 1) 
-
-    down =  Q_Table[currentY, currentX, 1] + treeExpand(3, 1)
-
-
-    index_max = 0
-    if (left == right == up == down):
-        index_max = random.randint(0, 3)
-    else:
-        index_max = np.argmax([left, right, up, down])
-    
-    # This indicates which direction to move in
-    return index_max
-
 
 # Q_Table is a tensor!
 Q_Table = np.zeros( (length, width, 4) )
 
-for i in range(100):
-    myGrid.render()
-    
-    action = chooseAction(currentX, currentY)
+# Prior state tracking
+currentY_p = currentY
+currentX_p = currentX
 
-    current_reward, isOver, currentX, currentY = myGrid.step(action)
+for gam_num in range(numGames):
+
+    for i in range(100):
+        myGrid.render()
     
-    if ( isOver == True ):
-        print("Game Over")
-        break
+        action = np.argmax(Q_Table[currentY, currentX, :] +  np.random.randn(1, 4) * (1.0/ ( i + 1.0 ) ) ) 
+    
+        current_reward, isOver, currentX, currentY = myGrid.step(action)
+    
+        Q_Table[currentY, currentX, action] = Q_Table[currentY, currentX, action] + ( (learning_rate) * ( discount * np.max(Q_Table[currentY, currentX, :] )  - Q_Table[currentY_p, currentX_p, action] ) )
+    
+
+        if ( isOver == True ):
+            print("Game Over")
+            myGrid.reset()
+            i = 101
 
     
-    time.sleep(0.2)
+        # time.sleep(0.2)
 
 
 while(1):

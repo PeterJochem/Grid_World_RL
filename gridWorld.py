@@ -6,8 +6,11 @@ class grid:
     # Constructor
     def __init__(self, length, width, currentX, currentY, goalX, goalY):
         
+        self.startX = currentX
+        self.startY = currentY
+
         self.current_position = np.array([currentY, currentX])
-        
+                
         # Grid dimensions
         self.length = length
         self.width = width
@@ -29,7 +32,15 @@ class grid:
         # Create a window for us to display the game's state
         self.window = GraphWin("Grid_World", self.window_length , self.window_width)
         self.window.setBackground("white")
-    
+            
+        self.render_setup()
+
+
+    def reset(self):
+         # Put it into a random location??????
+         self.current_position = np.array([self.startY, self.startX])
+         self.isOver = False
+
     
     # Describe here 
     def setRewards(self):
@@ -80,8 +91,8 @@ class grid:
             self.current_position[0] = self.current_position[0] - 1
 
     # This method will display the grid world
-    def render(self):
-        
+    def render_setup(self):
+
         self.rectangles = []
         
         # Store the list of points needed to draw the board
@@ -126,6 +137,27 @@ class grid:
                     # Set the current state's color
 
                     # Set the current state's goal state's color 
+    
+    def render(self):
+        
+        # Traverse the list of the rectangles to change their fill colors
+        if ( self.window != None ):
+            for i in  range( len( self.rectangles  ) ):
+                for j in range( len( self.rectangles[i] ) ):
+
+
+                    if( (i == self.current_position[0] ) and (j == self.current_position[1] ) ):
+                         self.rectangles[i][j].setFill("blue")
+
+                    elif( (i == self.goalY) and (j == self.goalX) ):
+                         self.rectangles[i][j].setFill("green")
+                    else:
+                        self.rectangles[i][j].setFill("white")
+
+
+
+
+
 
 
     # Take the system from the current state 
