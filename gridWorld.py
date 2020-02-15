@@ -4,9 +4,9 @@ from graphics import *
 class grid:
 
     # Constructor
-    def __init__(self, length, width, goalX, goalY):
+    def __init__(self, length, width, currentX, currentY, goalX, goalY):
         
-        self.current_position = np.array([0, 0])
+        self.current_position = np.array([currentY, currentX])
         
         # Grid dimensions
         self.length = length
@@ -20,15 +20,26 @@ class grid:
         self.goalY = goalY
     
         self.states = np.zeros( (length, width) )
-        # self.rewards = np.zeros( (length, width) )
+        self.rewards = np.zeros( (length, width) )
         # This is really just for testing
-        # self.setRewards()
+        self.setRewards()
 
         self.isOver = False
     
         # Create a window for us to display the game's state
         self.window = GraphWin("Grid_World", self.window_length , self.window_width)
         self.window.setBackground("white")
+    
+    
+    # Describe here 
+    def setRewards(self):
+        
+        # distance to reward
+        # Going out of bounds
+        pass     
+
+
+
 
     def moveLeft(self):
         
@@ -132,7 +143,7 @@ class grid:
         if ( ( (self.goalY == self.current_position[0] ) and (self.goalX == self.current_position[1] ) ) ):
             reward = 100
             
-        return reward, self.isOver
+        return reward, self.isOver, self.current_position[1], self.current_position[0]
     
 
 
