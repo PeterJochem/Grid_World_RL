@@ -10,7 +10,7 @@ Describe the Video here
 [![]()(https://www.youtube.com/watch?v=NLY9B3Y2eho  "My Agent Learning to Reach the Green Block")
 
 
-[![]()](https://www.youtube.com/watch?v=NLY9B3Y2eho "Mobile Manipulator")
+[![](GridWorld.png)](https://www.youtube.com/watch?v=NLY9B3Y2eho "Q-Learning in GridWorld")
 
 
 
