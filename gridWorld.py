@@ -155,11 +155,6 @@ class grid:
                         self.rectangles[i][j].setFill("white")
 
 
-
-
-
-
-
     # Take the system from the current state 
     # to the state after doing the given action
     # Input: 
@@ -182,7 +177,10 @@ class grid:
         reward = 0
         if ( ( (self.goalY == self.current_position[0] ) and (self.goalX == self.current_position[1] ) ) ):
             reward = 100
-            
+            print("Game Won")
+            self.isOver = True
+
+
         return reward, self.isOver, self.current_position[1], self.current_position[0]
     
 

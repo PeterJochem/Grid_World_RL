@@ -7,7 +7,7 @@ import random
 
 # Create our grid
 length = 10
-width = 10
+width = 7
 goalX = 2
 goalY = 3
 currentX = 6
@@ -15,9 +15,9 @@ currentY = 6
 myGrid = gridWorld.grid(length, width, currentX, currentY, goalX, goalY)
 
 discount = 0.95
-learning_rate = 0.8
+learning_rate = 0.80
 
-numGames = 100
+numGames = 10000
 
 # Describe here
 
@@ -28,30 +28,31 @@ Q_Table = np.zeros( (length, width, 4) )
 currentY_p = currentY
 currentX_p = currentX
 
-for gam_num in range(numGames):
+for game_num in range(numGames):
+    
+    print(game_num)
 
-    for i in range(100):
+    for i in range(10000):
         myGrid.render()
     
-        action = np.argmax(Q_Table[currentY, currentX, :] +  np.random.randn(1, 4) * (1.0/ ( i + 1.0 ) ) ) 
-    
+        action = np.argmax(Q_Table[currentY, currentX, :] +  np.random.randn(1, 4) * (1.0/ ( game_num + 1.0 ) ) ) 
+        
+        currentY_p = currentY
+        currentX_p = currentX
+
         current_reward, isOver, currentX, currentY = myGrid.step(action)
-    
-        Q_Table[currentY, currentX, action] = Q_Table[currentY, currentX, action] + ( (learning_rate) * ( discount * np.max(Q_Table[currentY, currentX, :] )  - Q_Table[currentY_p, currentX_p, action] ) )
+
+        Q_Table[currentY_p, currentX_p, action] = Q_Table[currentY_p, currentX_p, action] + ( (learning_rate) * ( current_reward + discount * np.max(Q_Table[currentY, currentX, :] )  - Q_Table[currentY_p, currentX_p, action] ) )
     
 
         if ( isOver == True ):
-            print("Game Over")
+            # print("Game Over")
             myGrid.reset()
-            i = 101
+            break
 
     
         # time.sleep(0.2)
 
-
-while(1):
-    myGrid.render()
-    pass
 
 
 
