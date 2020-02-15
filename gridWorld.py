@@ -1,5 +1,6 @@
 import numpy as np
 from graphics import *
+import random
 
 class grid:
 
@@ -38,7 +39,9 @@ class grid:
 
     def reset(self):
          # Put it into a random location??????
-         self.current_position = np.array([self.startY, self.startX])
+         newStartY = random.randint(0, self.length - 1)
+         newStartX = random.randint(0, self.width - 1)
+         self.current_position = np.array([newStartY, newStartX])
          self.isOver = False
 
     
