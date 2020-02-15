@@ -48,21 +48,29 @@ class grid:
         else:
             self.current_position[1] = self.current_position[1] - 1
 
+    def undo_Move(self, priorLocations):
+        priorX = priorLocations[1]
+        priorY = priorLocations[0]
+        
+        # Move the agent back to its prior location
+        self.current_position[0] = priorY
+        self.current_position[1] = priorX
+
+
     def moveRight(self):
 
         if ( self.current_position[1] == (self.width - 1) ):
             self.isOver = True
         else:
             self.current_position[1] = self.current_position[1] + 1
-
-
+    
     def moveDown(self):
         
         if ( self.current_position[0] == (self.length - 1) ):
             self.isOver = True
         else:
             self.current_position[0] =  self.current_position[0] + 1
-
+        
 
     def moveUp(self):
 
