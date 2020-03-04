@@ -8,8 +8,18 @@ class arrow:
 
     # Describe input parameters
     def __init__(self, x, y, width, length, window_width, window_length, window):
-        
+            
         self.window = window
+        
+        self.color = "blue"
+        self.width = 2
+
+        # This descirbes which direction the arrow is currently pointing
+        # 0 = left
+        # 1 = right
+        # 2 = up
+        # 3 = down
+        self.currentDirection = 0
 
         # Compute center_x and center_y of the grid
         center_x = (0.5 + x) * ( float(window_width) / float(width) )
@@ -47,50 +57,71 @@ class arrow:
         # Each arrow has three lines - the principal axis and two lines that make the "hat"
         # These lines define the up arrow
         self.line_1 = Line(self.Point_1, self.Point_2)
-        self.line_1.setFill("green")
+        self.line_1.setFill(self.color)
+        self.line_1.setWidth(self.width)
 
         self.line_2 = Line(self.Point_5, self.Point_2)
-        self.line_2.setFill("green")
+        self.line_2.setFill(self.color)
+        self.line_2.setWidth(self.width)
 
         self.line_3 = Line(self.Point_6, self.Point_2)
-        self.line_3.setFill("green")
+        self.line_3.setFill(self.color)
+        self.line_3.setWidth(self.width)
 
 
         # These lines define the down arrows
         self.line_4 = Line(self.Point_1, self.Point_2)
-        self.line_4.setFill("green")
+        self.line_4.setFill(self.color)
+        self.line_4.setWidth(self.width) 
+
 
         self.line_5 = Line(self.Point_7, self.Point_1)
-        self.line_5.setFill("green")
+        self.line_5.setFill(self.color)
+        self.line_5.setWidth(self.width)
 
         self.line_6 = Line(self.Point_8, self.Point_1)
-        self.line_6.setFill("green")
+        self.line_6.setFill(self.color)
+        self.line_6.setWidth(self.width)
 
         
         # These lines define the left arrow
         self.line_7 = Line(self.Point_3, self.Point_4)
-        self.line_7.setFill("green")
+        self.line_7.setFill(self.color)
+        self.line_7.setWidth(self.width)
+
 
         self.line_8 = Line(self.Point_9, self.Point_3)
-        self.line_8.setFill("green")
+        self.line_8.setFill(self.color)
+        self.line_8.setWidth(self.width)
+
 
         self.line_9 = Line(self.Point_10, self.Point_3)
-        self.line_9.setFill("green")
+        self.line_9.setFill(self.color)
+        self.line_9.setWidth(self.width)
+    
 
         # These lines define the left arrow
         self.line_10 = Line(self.Point_3, self.Point_4)
-        self.line_10.setFill("green")
+        self.line_10.setFill(self.color)
+        self.line_10.setWidth(self.width)
+
 
         self.line_11 = Line(self.Point_11, self.Point_4)
-        self.line_11.setFill("green")
+        self.line_11.setFill(self.color)
+        self.line_11.setWidth(self.width)
 
         self.line_12 = Line(self.Point_12, self.Point_4)
-        self.line_12.setFill("green")
-
+        self.line_12.setFill(self.color)
+        self.line_12.setWidth(self.width)
+ 
 
     # Describe method here
     def draw_down_arrow(self):
         
+        self.remove_arrow()
+        
+        self.currentDirection = 3
+
         self.line_1.draw(self.window)
 
         self.line_2.draw(self.window)
@@ -99,6 +130,11 @@ class arrow:
 
     # Describe here
     def draw_up_arrow(self):
+
+        self.remove_arrow()
+
+        self.currentDirection = 2
+
         self.line_4.draw(self.window)
 
         self.line_5.draw(self.window)
@@ -107,6 +143,11 @@ class arrow:
     
     # Describe here
     def draw_left_arrow(self):
+        
+        self.remove_arrow()
+
+        self.currentDirection = 0
+
         self.line_7.draw(self.window)
 
         self.line_8.draw(self.window)
@@ -115,13 +156,51 @@ class arrow:
 
     # Describe method here 
     def draw_right_arrow(self):
+
+        self.remove_arrow()
+            
+        self.currentDirection = 1
+        
         self.line_10.draw(self.window)
 
         self.line_11.draw(self.window)
 
         self.line_12.draw(self.window)
    
-   # remove arrow
+    def remove_arrow(self):
+        
+        # 0 - 4 is left, right, up, down
+        
+        if (self.currentDirection == 0):
+            self.line_7.undraw()
+
+            self.line_8.undraw()
+
+            self.line_9.undraw()
+
+        elif (  self.currentDirection == 1 ):
+                
+            self.line_10.undraw()
+
+            self.line_11.undraw()
+         
+            self.line_12.undraw()
+
+
+        elif(  self.currentDirection == 2  ):
+            self.line_4.undraw()
+
+            self.line_5.undraw()
+    
+            self.line_6.undraw()
+
+        elif ( self.currentDirection == 3 ):
+            self.line_1.undraw()
+
+            self.line_2.undraw()
+
+            self.line_3.undraw()
+    
 
 
 
@@ -169,6 +248,19 @@ class grid:
          newStartX = random.randint(0, self.width - 1)
          self.current_position = np.array([newStartY, newStartX])
          self.isOver = False
+    
+    # Describe 
+    def changeArrow(self, x_grid, y_grid, direction):
+        
+        # 0 - 4 is left, right, up, down
+        if ( direction == 0 ):
+            self.arrows[y_grid][x_grid].draw_left_arrow()
+        elif ( direction == 1):
+             self.arrows[y_grid][x_grid].draw_right_arrow()
+        elif ( direction == 2 ):
+             self.arrows[y_grid][x_grid].draw_up_arrow()
+        elif ( direction == 3 ):
+             self.arrows[y_grid][x_grid].draw_down_arrow()
 
     
     # Describe here 
@@ -300,7 +392,20 @@ class grid:
                     # Set the current state's color
 
                     # Set the current state's goal state's color 
-    
+        
+                    # Set the arrow's initial directions
+                    direction = random.random()
+                    # Randomnly assign directions to inital set
+                    if ( direction < 0.25):
+                        self.arrows[i][j].draw_up_arrow()
+                    elif( (direction > 0.25) and (direction < 0.50) ):
+                        self.arrows[i][j].draw_down_arrow()
+                    elif ( (direction > 0.50) and (direction < 0.75)  ):
+                        self.arrows[i][j].draw_left_arrow()
+                    elif( (direction > 0.75) ):
+                        self.arrows[i][j].draw_right_arrow()
+
+
     def render(self):
         
         # Traverse the list of the rectangles to change their fill colors
@@ -316,7 +421,12 @@ class grid:
                          self.rectangles[i][j].setFill("green")
                     else:
                         self.rectangles[i][j].setFill("white")
-            
+    
+
+                    # Now set the arrow direction
+                    # maxValue = 
+                
+        
 
     # Take the system from the current state 
     # to the state after doing the given action
