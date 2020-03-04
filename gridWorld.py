@@ -31,49 +31,97 @@ class arrow:
         self.Point_6 = Point( self.Point_1.x + (delta_y), self.Point_1.y + (0.10 * ( float(window_width) / float(width)  ) ) )
         
         # These points define the down arrow's hat
-        self.Point_7 = Point( self.Point_2.x - (delta_y), self.Point_2.y + (0.10 * ( float(window_width) / float(width)  ) ) )
-        self.Point_8 = Point( self.Point_2.x + (delta_y), self.Point_2.y + (0.10 * ( float(window_width) / float(width)  ) ) )
+        self.Point_7 = Point( self.Point_2.x - (delta_y), self.Point_2.y - (0.10 * ( float(window_width) / float(width)  ) ) )
+        self.Point_8 = Point( self.Point_2.x + (delta_y), self.Point_2.y - (0.10 * ( float(window_width) / float(width)  ) ) )
 
         # These points define the left arrow's hat
-        self.Point_9 = Point( self.Point_3.x - (delta_y), self.Point_3.y + (0.10 * ( float(window_width) / float(width)  ) ) )
+        self.Point_9 = Point( self.Point_3.x + (delta_y), self.Point_3.y - (0.10 * ( float(window_width) / float(width)  ) ) )
         self.Point_10 = Point( self.Point_3.x + (delta_y), self.Point_3.y + (0.10 * ( float(window_width) / float(width)  ) ) )
         
         # These points define the left arrow's hat
-        self.Point_11 = Point( self.Point_4.x - (delta_y), self.Point_4.y + (0.10 * ( float(window_width) / float(width)  ) ) )
-        self.Point_12 = Point( self.Point_4.x + (delta_y), self.Point_4.y + (0.10 * ( float(window_width) / float(width)  ) ) )
+        self.Point_11 = Point( self.Point_4.x - (delta_y), self.Point_4.y - (0.10 * ( float(window_width) / float(width)  ) ) )
+        self.Point_12 = Point( self.Point_4.x - (delta_y), self.Point_4.y + (0.10 * ( float(window_width) / float(width)  ) ) )
         
+        
+        # Define all the lines we need for each grid
+        # Each arrow has three lines - the principal axis and two lines that make the "hat"
+        # These lines define the up arrow
+        self.line_1 = Line(self.Point_1, self.Point_2)
+        self.line_1.setFill("green")
+
+        self.line_2 = Line(self.Point_5, self.Point_2)
+        self.line_2.setFill("green")
+
+        self.line_3 = Line(self.Point_6, self.Point_2)
+        self.line_3.setFill("green")
 
 
+        # These lines define the down arrows
+        self.line_4 = Line(self.Point_1, self.Point_2)
+        self.line_4.setFill("green")
+
+        self.line_5 = Line(self.Point_7, self.Point_1)
+        self.line_5.setFill("green")
+
+        self.line_6 = Line(self.Point_8, self.Point_1)
+        self.line_6.setFill("green")
+
         
-        
+        # These lines define the left arrow
+        self.line_7 = Line(self.Point_3, self.Point_4)
+        self.line_7.setFill("green")
+
+        self.line_8 = Line(self.Point_9, self.Point_3)
+        self.line_8.setFill("green")
+
+        self.line_9 = Line(self.Point_10, self.Point_3)
+        self.line_9.setFill("green")
+
+        # These lines define the left arrow
+        self.line_10 = Line(self.Point_3, self.Point_4)
+        self.line_10.setFill("green")
+
+        self.line_11 = Line(self.Point_11, self.Point_4)
+        self.line_11.setFill("green")
+
+        self.line_12 = Line(self.Point_12, self.Point_4)
+        self.line_12.setFill("green")
 
 
     # Describe method here
-    def draw_up_arrow(self):
+    def draw_down_arrow(self):
         
-        line1 = Line(self.Point_1, self.Point_2)
-        line1.draw(self.window)
-        line1.setFill("green")
+        self.line_1.draw(self.window)
 
-        line2 = Line(self.Point_5, self.Point_2)
-        line2.draw(self.window)
-        line2.setFill("green")
+        self.line_2.draw(self.window)
 
+        self.line_3.draw(self.window)
 
-        line3 = Line(self.Point_6, self.Point_2)
-        line3.draw(self.window)
-        line3.setFill("green")
+    # Describe here
+    def draw_up_arrow(self):
+        self.line_4.draw(self.window)
 
+        self.line_5.draw(self.window)
 
+        self.line_6.draw(self.window)
     
+    # Describe here
+    def draw_left_arrow(self):
+        self.line_7.draw(self.window)
 
+        self.line_8.draw(self.window)
 
+        self.line_9.draw(self.window) 
 
-    
-    # def draw_down_arrow
-    # def draw_left arrow
-    # draw right arrow
-    # remove arrow
+    # Describe method here 
+    def draw_right_arrow(self):
+        self.line_10.draw(self.window)
+
+        self.line_11.draw(self.window)
+
+        self.line_12.draw(self.window)
+   
+   # remove arrow
 
 
 
@@ -247,7 +295,7 @@ class grid:
                         self.rectangles[i][j].setFill("white")
        
                     # Testing the arrow drawing
-                    self.arrows[i][j].draw_up_arrow()    
+                    self.arrows[i][j].draw_right_arrow()    
 
                     # Set the current state's color
 
