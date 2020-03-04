@@ -37,20 +37,21 @@ class arrow:
         # Add the points that define the "hats" of the arrows
         # These are the "hats" of the vertically upwards arrow
         delta_y = (0.10 * ( float(window_width) / float(width) ) )
-        self.Point_5 = Point( self.Point_1.x - (delta_y), self.Point_1.y + (0.10 * ( float(window_width) / float(width)  ) ) )  
-        self.Point_6 = Point( self.Point_1.x + (delta_y), self.Point_1.y + (0.10 * ( float(window_width) / float(width)  ) ) )
+        self.Point_5 = Point( self.Point_1.x - (delta_y), self.Point_2.y - (0.10 * ( float(window_width) / float(width)  ) ) )  
+        self.Point_6 = Point( self.Point_1.x + (delta_y), self.Point_2.y - (0.10 * ( float(window_width) / float(width)  ) ) )
         
         # These points define the down arrow's hat
-        self.Point_7 = Point( self.Point_2.x - (delta_y), self.Point_2.y - (0.10 * ( float(window_width) / float(width)  ) ) )
-        self.Point_8 = Point( self.Point_2.x + (delta_y), self.Point_2.y - (0.10 * ( float(window_width) / float(width)  ) ) )
+        self.Point_7 = Point( self.Point_2.x - (delta_y), self.Point_1.y + (0.10 * ( float(window_width) / float(width)  ) ) )
+        self.Point_8 = Point( self.Point_2.x + (delta_y), self.Point_1.y + (0.10 * ( float(window_width) / float(width)  ) ) )
 
+        delta_y = (0.10 * ( float(window_length) / float(length) ) )
         # These points define the left arrow's hat
-        self.Point_9 = Point( self.Point_3.x + (delta_y), self.Point_3.y - (0.10 * ( float(window_width) / float(width)  ) ) )
-        self.Point_10 = Point( self.Point_3.x + (delta_y), self.Point_3.y + (0.10 * ( float(window_width) / float(width)  ) ) )
+        self.Point_9 = Point( self.Point_3.x + (delta_y), self.Point_3.y - (0.05 * ( float(window_width) / float(width)  ) ) )
+        self.Point_10 = Point( self.Point_3.x + (delta_y), self.Point_3.y + (0.05 * ( float(window_width) / float(width)  ) ) )
         
-        # These points define the left arrow's hat
-        self.Point_11 = Point( self.Point_4.x - (delta_y), self.Point_4.y - (0.10 * ( float(window_width) / float(width)  ) ) )
-        self.Point_12 = Point( self.Point_4.x - (delta_y), self.Point_4.y + (0.10 * ( float(window_width) / float(width)  ) ) )
+        # These points define the right arrow's hat
+        self.Point_11 = Point( self.Point_4.x - (delta_y), self.Point_4.y - (0.05 * ( float(window_width) / float(width)  ) ) )
+        self.Point_12 = Point( self.Point_4.x - (delta_y), self.Point_4.y + (0.05 * ( float(window_width) / float(width)  ) ) )
         
         
         # Define all the lines we need for each grid

@@ -7,7 +7,7 @@ import random
 
 # Create our grid
 length = 10
-width =  7
+width =  10
 goalX = 2
 goalY = 3
 currentX = 0
