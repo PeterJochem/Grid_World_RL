@@ -2,6 +2,81 @@ import numpy as np
 from graphics import *
 import random
 
+
+# Describe here
+class arrow:
+
+    # Describe input parameters
+    def __init__(self, x, y, width, length, window_width, window_length, window):
+        
+        self.window = window
+
+        # Compute center_x and center_y of the grid
+        center_x = (0.5 + x) * ( float(window_width) / float(width) )
+        center_y = (0.5 + y) * ( float(window_length) / float(length) )
+
+        # Add points for the vertical directions
+        self.Point_1 = Point( center_x , center_y - (0.20 * ( float(window_length) / float(length) ) ) )
+        self.Point_2 = Point( center_x , center_y + (0.20 * ( float(window_length) / float(length) ) ) )
+    
+        # Add points for the horizontal directions
+        self.Point_3 = Point( center_x - (0.20 * ( float(window_width) / float(width)  ) ), center_y )
+        self.Point_4 = Point( center_x + (0.20 * ( float(window_width) / float(width) ) ), center_y  )
+        
+
+        # Add the points that define the "hats" of the arrows
+        # These are the "hats" of the vertically upwards arrow
+        delta_y = (0.10 * ( float(window_width) / float(width) ) )
+        self.Point_5 = Point( self.Point_1.x - (delta_y), self.Point_1.y + (0.10 * ( float(window_width) / float(width)  ) ) )  
+        self.Point_6 = Point( self.Point_1.x + (delta_y), self.Point_1.y + (0.10 * ( float(window_width) / float(width)  ) ) )
+        
+        # These points define the down arrow's hat
+        self.Point_7 = Point( self.Point_2.x - (delta_y), self.Point_2.y + (0.10 * ( float(window_width) / float(width)  ) ) )
+        self.Point_8 = Point( self.Point_2.x + (delta_y), self.Point_2.y + (0.10 * ( float(window_width) / float(width)  ) ) )
+
+        # These points define the left arrow's hat
+        self.Point_9 = Point( self.Point_3.x - (delta_y), self.Point_3.y + (0.10 * ( float(window_width) / float(width)  ) ) )
+        self.Point_10 = Point( self.Point_3.x + (delta_y), self.Point_3.y + (0.10 * ( float(window_width) / float(width)  ) ) )
+        
+        # These points define the left arrow's hat
+        self.Point_11 = Point( self.Point_4.x - (delta_y), self.Point_4.y + (0.10 * ( float(window_width) / float(width)  ) ) )
+        self.Point_12 = Point( self.Point_4.x + (delta_y), self.Point_4.y + (0.10 * ( float(window_width) / float(width)  ) ) )
+        
+
+
+        
+        
+
+
+    # Describe method here
+    def draw_up_arrow(self):
+        
+        line1 = Line(self.Point_1, self.Point_2)
+        line1.draw(self.window)
+        line1.setFill("green")
+
+        line2 = Line(self.Point_5, self.Point_2)
+        line2.draw(self.window)
+        line2.setFill("green")
+
+
+        line3 = Line(self.Point_6, self.Point_2)
+        line3.draw(self.window)
+        line3.setFill("green")
+
+
+    
+
+
+
+    
+    # def draw_down_arrow
+    # def draw_left arrow
+    # draw right arrow
+    # remove arrow
+
+
+
 class grid:
 
     # Constructor
@@ -9,7 +84,7 @@ class grid:
         
         self.startX = currentX
         self.startY = currentY
-
+    
         self.current_position = np.array([currentY, currentX])
                 
         # Grid dimensions
@@ -19,6 +94,9 @@ class grid:
         # Window dimensions
         self.window_width = 8 * 100
         self.window_length = 8 * 100
+
+        # Create a list of arrows
+        self.arrows = []
 
         self.goalX = goalX
         self.goalY = goalY
@@ -92,6 +170,34 @@ class grid:
             self.isOver = True
         else:
             self.current_position[0] = self.current_position[0] - 1
+    
+
+    # Describe method here
+    def draw_up_arrow(self, x, y):
+        
+        # Compute center_x and center_y of the grid
+        center_x = (0.5 + x) * ( float(self.window_width) / float(self.width) ) 
+        center_y = (0.5 + y) * ( float(self.window_length) / float(self.length) )  
+
+        # Add point A
+        Point_1 = Point( center_x , center_y - (0.20 * ( float(self.window_length) / float(self.length) ) ) ) 
+
+        # Add point B
+        Point_2 = Point( center_x , center_y + (0.20 * ( float(self.window_length) / float(self.length) )) )
+
+        # Add the graphics object to a list so we can
+        # modify/remove it later
+        
+        myLine = Line(Point_1, Point_2)
+        
+        #myLine.draw(self.window)
+         
+        #myLine.setFill("green")
+
+
+    
+
+
 
     # This method will display the grid world
     def render_setup(self):
@@ -104,7 +210,9 @@ class grid:
         for i in range( self.length):
             
             current_row_rectangles = []
-                
+            current_row_arrows = []
+
+
             Point_1 = Point( 0 , 0 ) 
             for j in range( self.width ):
                 
@@ -115,10 +223,13 @@ class grid:
                 Point_2 = Point( current_row * (j + 1) , current_column * (i + 1) )
                 
                 current_row_rectangles.append( Rectangle(Point_1, Point_2) )
-
+                current_row_arrows.append(arrow( j, i, self.width, self.length, self.window_width, self.window_length, self.window) )
+                
 
             # Append the next row to the array
             self.rectangles.append(current_row_rectangles)
+            self.arrows.append(current_row_arrows)
+
 
         # Traverse the list of the rectangles to change their fill colors
         if ( self.window != None ):
@@ -135,7 +246,8 @@ class grid:
                     else:
                         self.rectangles[i][j].setFill("white")
        
-                    
+                    # Testing the arrow drawing
+                    self.arrows[i][j].draw_up_arrow()    
 
                     # Set the current state's color
 
@@ -156,7 +268,7 @@ class grid:
                          self.rectangles[i][j].setFill("green")
                     else:
                         self.rectangles[i][j].setFill("white")
-
+            
 
     # Take the system from the current state 
     # to the state after doing the given action
