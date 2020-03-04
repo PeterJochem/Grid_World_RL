@@ -7,11 +7,11 @@ import random
 
 # Create our grid
 length = 10
-width = 7
+width =  7
 goalX = 2
 goalY = 3
-currentX = 6
-currentY = 6
+currentX = 0
+currentY = 0
 myGrid = gridWorld.grid(length, width, currentX, currentY, goalX, goalY)
 
 discount = 0.95

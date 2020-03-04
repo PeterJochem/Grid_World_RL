@@ -385,7 +385,9 @@ class grid:
                          self.rectangles[i][j].setFill("green")
                     else:
                         self.rectangles[i][j].setFill("white")
-       
+                    
+                    self.rectangles[i][j].setWidth("4")
+
                     # Testing the arrow drawing
                     self.arrows[i][j].draw_right_arrow()    
 
