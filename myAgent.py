@@ -27,6 +27,8 @@ numGames = 10000
 
 # Describe here
 
+
+
 # Q_Table is a tensor!
 Q_Table = np.zeros( (length, width, 4) )
 
