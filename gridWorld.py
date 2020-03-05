@@ -242,6 +242,13 @@ class grid:
             
         self.render_setup()
 
+        
+    # Describe method here
+    def convertToInput(self, current_X, current_Y):
+
+        return np.array([current_Y * self.width + current_X])
+
+
 
     def reset(self):
          # Put it into a random location??????
