@@ -27,13 +27,16 @@ numGames = 10000
 Q_value = keras.Sequential([
     keras.layers.Dense(20, input_shape = (1, ) ),
     keras.layers.Dense(20, activation = 'relu'),
-    keras.layers.Dense(4)
+    keras.layers.Dense(1)
 ])
 
 # Set more of the model's parameters
-Q_value.compile(optimizer='adam',
-              loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
-              metrics=['accuracy'])
+optimizer = tf.keras.optimizers.RMSprop(0.001)
+
+Q_value.compile(loss='mse',
+                optimizer=optimizer,
+                metrics=['mae', 'mse'])
+
 
 batch_size = 100
 # use np.append()
