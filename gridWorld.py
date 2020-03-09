@@ -248,6 +248,12 @@ class grid:
 
         return np.array([current_Y * self.width + current_X])
 
+    
+    # Describe here
+    def drawMaxArrow(self):
+        pass    
+    
+
 
 
     def reset(self):
@@ -459,7 +465,7 @@ class grid:
         # Compute the given reward function
         reward = 0
         if ( ( (self.goalY == self.current_position[0] ) and (self.goalX == self.current_position[1] ) ) ):
-            reward = 100
+            reward = 40
             print("Game Won")
             self.isOver = True
 

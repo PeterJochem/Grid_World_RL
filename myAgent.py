@@ -10,15 +10,15 @@ from tensorflow import keras
 
 
 # Create our grid
-length = 10
-width =  10
-goalX = 2
-goalY = 3
+length = 2
+width =  3
+goalX = 1
+goalY = 1
 currentX = 0
 currentY = 0
 myGrid = gridWorld.grid(length, width, currentX, currentY, goalX, goalY)
 
-discount = 0.95
+discount = 0.40
 learning_rate = 0.80
 
 numGames = 10000
@@ -31,14 +31,14 @@ Q_value = keras.Sequential([
 ])
 
 # Set more of the model's parameters
-optimizer = tf.keras.optimizers.RMSprop(0.001)
+optimizer = tf.keras.optimizers.RMSprop(0.05)
 
 Q_value.compile(loss='mse',
                 optimizer=optimizer,
                 metrics=['mae', 'mse'])
 
 
-batch_size = 100
+batch_size = 20
 # use np.append()
 training_labels = np.array([])
 input_data = np.array([])
@@ -46,6 +46,7 @@ input_data = np.array([])
 # Get some batch of data to train on and then call the lie below
 # model.fit(train_images, train_labels, epochs=10)
 
+epsilon = 0.3
 
 # Prior state tracking
 currentY_p = currentY
@@ -55,10 +56,10 @@ for game_num in range(numGames):
     
     print(game_num)
     
-    training_labels = np.array([])
-    input_data = np.array([])
+    # training_labels = np.array([])
+    # input_data = np.array([])
 
-    for i in range(300):
+    for i in range(20):
         myGrid.render()
         
         # Record the true maximum action so that we can check if it has changed 
@@ -66,18 +67,31 @@ for game_num in range(numGames):
         # original_max = np.argmax(Q_Table[currentY, currentX, :] )
 
         # Choose an action
-        action = np.argmax(Q_value.predict( myGrid.convertToInput(currentX, currentY)  ) +  np.random.randn(1, 4) * (1.0/ ( game_num + 1.0 ) ) ) 
+        # 0 - 4 is left, right, up, down
+        action1 = Q_value.predict( myGrid.convertToInput(currentX - 1, currentY) ) # +  np.random.randn(1, 1) * (1.0/ ( game_num + 1.0 ) ) 
+        action2 = Q_value.predict( myGrid.convertToInput(currentX + 1, currentY) ) # +  np.random.randn(1, 1) * (1.0/ ( game_num + 1.0 ) )
+        action3 = Q_value.predict( myGrid.convertToInput(currentX, currentY + 1) ) # +  np.random.randn(1, 1) * (1.0/ ( game_num + 1.0 ) )
+        action4 = Q_value.predict( myGrid.convertToInput(currentX, currentY - 1) ) # +  np.random.randn(1, 1) * (1.0/ ( game_num + 1.0 ) )
+         
+        action = np.argmax( [action1[0], action2[0], action3[0], action4[0]]  )
+        if ( epsilon > random.random() ):
+            # Choose axtion randomnly
+            action = random.randrange(4)
+            
+        # print([action1, action2, action3, action4] )
+
+        # action = np.argmax(Q_value.predict( myGrid.convertToInput(currentX, currentY)  ) )
         
+
         currentY_p = currentY
         currentX_p = currentX
 
         # Observe the reward and the next state
         current_reward, isOver, currentX, currentY = myGrid.step(action)
 
-
         # Record the "label" 
         label = current_reward + (discount * np.amax( Q_value.predict( myGrid.convertToInput(currentX, currentY) ) ) ) 
-        
+             
         # Record the value in the training data
         # Fix me - more efficient way?
         training_labels = np.append( training_labels, label )
@@ -98,16 +112,32 @@ for game_num in range(numGames):
             # print("Game Over")
             myGrid.reset()
             break
-
-    # Do a training epoch
-    print(input_data)
-    print(training_labels)
-    print("")
-    print("")
-    Q_value.fit(input_data, training_labels, epochs = 10)
-
     
-        # time.sleep(0.2)
+    
+    if ( game_num % batch_size == 0 ):
+        # Do a training epoch
+        # print(input_data)
+        # print(training_labels)
+        # print("")
+        # print("")
+        Q_value.fit(input_data, training_labels, epochs = 10)
+        # myGrid.drawMaxArrow()
+        # Traverse the grid and redraw the arrows
+        for i in range( myGrid.length):
+            for j in range (myGrid.width):
+                 # def changeArrow(self, x_grid, y_grid, direction)
+            
+                # 0 - 4 is left, right, up, down
+                action1 = Q_value.predict( myGrid.convertToInput(j - 1, i) ) 
+                action2 = Q_value.predict( myGrid.convertToInput(j + 1, i) )
+                action3 = Q_value.predict( myGrid.convertToInput(j, i + 1) )
+                action4 = Q_value.predict( myGrid.convertToInput(j, i - 1) )
+
+                action = np.argmax( [action1[0], action2[0], action3[0], action4[0]]  )
+ 
+                myGrid.changeArrow(j, i, action)
+                training_labels = np.array([])
+                input_data = np.array([])
 
 
 
