@@ -23,3 +23,6 @@ source venv/bin/activate
 How to run virtual enviroment in jupyter notebook
 https://janakiev.com/blog/jupyter-virtual-envs/
 
+How to convert python files to an ipython notebook
+https://pypi.org/project/ipynb-py-convert/
+
