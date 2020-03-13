@@ -3,10 +3,13 @@ from graphics import *
 import random
 
 
-# Describe here
+# This class describes the graphics objects needed to draw an arrow
+# Each cell in the grid will have a corresponding arrow object
 class arrow:
 
-    # Describe input parameters
+    # (x, y) is the location in the grid
+    # width and length are the number of cells in the grid
+    # window_width and window_length are the pixel dimensions of the grid 
     def __init__(self, x, y, width, length, window_width, window_length, window):
             
         self.window = window
@@ -116,7 +119,7 @@ class arrow:
         self.line_12.setWidth(self.width)
  
 
-    # Describe method here
+    # This draws the down arrow
     def draw_down_arrow(self):
         
         self.remove_arrow()
@@ -129,7 +132,7 @@ class arrow:
 
         self.line_3.draw(self.window)
 
-    # Describe here
+    # This draws the up arrow
     def draw_up_arrow(self):
 
         self.remove_arrow()
@@ -141,8 +144,8 @@ class arrow:
         self.line_5.draw(self.window)
 
         self.line_6.draw(self.window)
-    
-    # Describe here
+
+    # This draws the left arrow
     def draw_left_arrow(self):
         
         self.remove_arrow()
@@ -155,7 +158,7 @@ class arrow:
 
         self.line_9.draw(self.window) 
 
-    # Describe method here 
+    # This draws the right arrow 
     def draw_right_arrow(self):
 
         self.remove_arrow()
@@ -167,7 +170,8 @@ class arrow:
         self.line_11.draw(self.window)
 
         self.line_12.draw(self.window)
-   
+    
+    # This method undraws the current arrow at the given location
     def remove_arrow(self):
         
         # 0 - 4 is left, right, up, down
@@ -204,15 +208,18 @@ class arrow:
     
 
 
-
+# This class holds all the information related to the graphic grid
 class grid:
 
-    # Constructor
+    # length and width are the number of cells in the grid
+    # currentX and currentY are the agent's initial location
+    # goalX and goalY are the agent's desired location
     def __init__(self, length, width, currentX, currentY, goalX, goalY):
         
         self.startX = currentX
         self.startY = currentY
     
+        # The agent's current position
         self.current_position = np.array([currentY, currentX])
                 
         # Grid dimensions
@@ -223,54 +230,49 @@ class grid:
         self.window_width = 8 * 100
         self.window_length = 8 * 100
 
-        # Create a list of arrows
+        # Create a list of arrow objects
+        # This will hold graphics objects 
         self.arrows = []
-
+        
+        # Records the agent's goal state
         self.goalX = goalX
         self.goalY = goalY
-    
+        
+        # Create data structure to record the grid's shape
         self.states = np.zeros( (length, width) )
-        self.rewards = np.zeros( (length, width) )
-        # This is really just for testing
-        self.setRewards()
-
+        
+        # This records if the game is over or not
         self.isOver = False
     
         # Create a window for us to display the game's state
-        self.window = GraphWin("Grid_World", self.window_length , self.window_width)
+        self.window = GraphWin("Grid_World", self.window_length, self.window_width)
         self.window.setBackground("white")
-            
+           
+        # Create the graphic's objects needed to draw board
         self.render_setup()
 
         
-    # Describe method here
+    # This method converts the agent's x, y location into the format 
+    # needed for the neural network
     def convertToInput(self, current_X, current_Y):
-    
         
-        # value = np.zeros(self.length * self.width)
-        #value[current_Y * self.width + current_X] = 1
-        
-
         return np.array( [current_Y * self.width + current_X] )
 
-    
-    # Describe here
-    def drawMaxArrow(self):
-        pass    
-    
 
-
-
+    # This method resets the agent to a random initial start state 
     def reset(self):
-         # Put it into a random location??????
          newStartY = random.randint(0, self.length - 1)
          newStartX = random.randint(0, self.width - 1)
          self.current_position = np.array([newStartY, newStartX])
          self.isOver = False
     
-    # Describe 
+    # This method change's the arrow at the grid (x,y) 
     def changeArrow(self, x_grid, y_grid, direction):
         
+        # Don't draw the arrow on the goal state
+        if ( (x_grid == self.goalX ) and (y_grid == self.goalY) ):
+            return
+
         # 0 - 4 is left, right, up, down
         if ( direction == 0 ):
             self.arrows[y_grid][x_grid].draw_left_arrow()
@@ -281,24 +283,16 @@ class grid:
         elif ( direction == 3 ):
              self.arrows[y_grid][x_grid].draw_down_arrow()
 
-    
-    # Describe here 
-    def setRewards(self):
-        
-        # distance to reward
-        # Going out of bounds
-        pass     
 
-
-
-
+    # This moves the agent one grid to the left
     def moveLeft(self):
         
         if ( self.current_position[1] == 0):
             self.isOver = True
         else:
             self.current_position[1] = self.current_position[1] - 1
-
+        
+    # This method undoes the prior move
     def undo_Move(self, priorLocations):
         priorX = priorLocations[1]
         priorY = priorLocations[0]
@@ -307,7 +301,7 @@ class grid:
         self.current_position[0] = priorY
         self.current_position[1] = priorX
 
-
+    # Move the agent right one square
     def moveRight(self):
 
         if ( self.current_position[1] == (self.width - 1) ):
@@ -315,6 +309,7 @@ class grid:
         else:
             self.current_position[1] = self.current_position[1] + 1
     
+    # Move the agent down one square
     def moveDown(self):
         
         if ( self.current_position[0] == (self.length - 1) ):
@@ -322,7 +317,7 @@ class grid:
         else:
             self.current_position[0] =  self.current_position[0] + 1
         
-
+    # Move the agent up one square
     def moveUp(self):
 
         if ( self.current_position[0] == 0 ):
@@ -331,7 +326,7 @@ class grid:
             self.current_position[0] = self.current_position[0] - 1
     
 
-    # Describe method here
+    # Draw an up arrow at the given location (x, y)
     def draw_up_arrow(self, x, y):
         
         # Compute center_x and center_y of the grid
@@ -346,19 +341,10 @@ class grid:
 
         # Add the graphics object to a list so we can
         # modify/remove it later
-        
         myLine = Line(Point_1, Point_2)
-        
-        #myLine.draw(self.window)
-         
-        #myLine.setFill("green")
 
 
-    
-
-
-
-    # This method will display the grid world
+    # This method will create the graphics objects needed for the grid world
     def render_setup(self):
 
         self.rectangles = []
@@ -370,7 +356,6 @@ class grid:
             
             current_row_rectangles = []
             current_row_arrows = []
-
 
             Point_1 = Point( 0 , 0 ) 
             for j in range( self.width ):
@@ -395,28 +380,29 @@ class grid:
             for i in  range( len( self.rectangles  ) ):
                 for j in range( len( self.rectangles[i] ) ):
                     
+                    # Draw the rectangle
                     self.rectangles[i][j].draw(self.window)
                     
+                    # Set the rectangle's color
                     if( (i == self.current_position[0] ) and (j == self.current_position[1] ) ):
                          self.rectangles[i][j].setFill("blue")
 
                     elif( (i == self.goalY) and (j == self.goalX) ):
                          self.rectangles[i][j].setFill("green")
+                    
                     else:
                         self.rectangles[i][j].setFill("white")
                     
                     self.rectangles[i][j].setWidth("4")
+                    
+                    # Don't draw an arrow on the goal state
+                    if ( (i == self.goalY ) and (j == self.goalX) ):
+                        continue
 
-                    # Testing the arrow drawing
-                    self.arrows[i][j].draw_right_arrow()    
-
-                    # Set the current state's color
-
-                    # Set the current state's goal state's color 
-        
                     # Set the arrow's initial directions
                     direction = random.random()
-                    # Randomnly assign directions to inital set
+                    
+                    # Draw random arrows to represent the initial policy
                     if ( direction < 0.25):
                         self.arrows[i][j].draw_up_arrow()
                     elif( (direction > 0.25) and (direction < 0.50) ):
@@ -427,6 +413,7 @@ class grid:
                         self.arrows[i][j].draw_right_arrow()
 
 
+    # This method will draw the board
     def render(self):
         
         # Traverse the list of the rectangles to change their fill colors
@@ -442,16 +429,11 @@ class grid:
                          self.rectangles[i][j].setFill("green")
                     else:
                         self.rectangles[i][j].setFill("white")
-    
-
-                    # Now set the arrow direction
-                    # maxValue = 
-                
         
 
     # Take the system from the current state 
     # to the state after doing the given action
-    # Input: 
+    # Input: the action to take
     # Return: reward, isOver 
     def step(self, action):
        
@@ -470,8 +452,9 @@ class grid:
         # Compute the given reward function
         reward = -1
         if ( ( (self.goalY == self.current_position[0] ) and (self.goalX == self.current_position[1] ) ) ):
+            
             reward = 1
-            print("Game Won")
+            # print("Game Won")
             self.isOver = True
 
 
