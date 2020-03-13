@@ -414,13 +414,12 @@ class grid:
 
 
     # This method will draw the board
-    def render(self):
+    def render(self, Q_value):
         
         # Traverse the list of the rectangles to change their fill colors
         if ( self.window != None ):
             for i in  range( len( self.rectangles  ) ):
                 for j in range( len( self.rectangles[i] ) ):
-
 
                     if( (i == self.current_position[0] ) and (j == self.current_position[1] ) ):
                          self.rectangles[i][j].setFill("blue")
@@ -428,8 +427,18 @@ class grid:
                     elif( (i == self.goalY) and (j == self.goalX) ):
                          self.rectangles[i][j].setFill("green")
                     else:
-                        self.rectangles[i][j].setFill("white")
+                        # customColor = color_rgb(128, 0, 255)
+                        #current_value = np.amax( Q_value.predict( self.convertToInput(j, i) ) )
+                        #colorValue = int(current_value * 200)
+                        #if (colorValue > 255):
+                        #    colorValue = 254
+                        #if ( colorValue < 0):
+                        #    colorValue = 0
+                        #self.rectangles[i][j].setFill( color_rgb(0, 0, colorValue ) )
+                        self.rectangles[i][j].setFill( "white" )
         
+
+
 
     # Take the system from the current state 
     # to the state after doing the given action

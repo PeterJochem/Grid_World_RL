@@ -61,7 +61,7 @@ currentX_p = currentX
 for game_num in range(1, numGames):
     
     for i in range(20):
-        myGrid.render()
+        myGrid.render(Q_value)
         
         # Choose an action
         # 0 - 4 is left, right, up, down
