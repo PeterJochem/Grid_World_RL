@@ -20,7 +20,7 @@ myGrid = gridWorld.grid(length, width, currentX, currentY, goalX, goalY)
 
 discount = 0.99
 learning_rate = 0.80
-epsilonDecay = 0.8
+epsilonDecay = 0.95
 
 numGames = 100000
 
@@ -32,7 +32,7 @@ Q_value = keras.Sequential([
 ])
 
 # Set more of the model's parameters
-optimizer = tf.keras.optimizers.RMSprop(0.01)
+optimizer = tf.keras.optimizers.RMSprop(0.001)
 
 Q_value.compile(loss='mse',
                 optimizer=optimizer,
