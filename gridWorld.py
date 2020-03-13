@@ -410,11 +410,12 @@ class grid:
                         # customColor = color_rgb(128, 0, 255)
                         current_value = np.amax(Q_Table[i, j, :] )
                         
-                        colorValue = int(current_value * 0.7)
+                        colorValue = int(current_value * 0.5)
                         if (colorValue > 255):
                             colorValue = 254
 
                         self.rectangles[i][j].setFill( color_rgb(0, 0, colorValue ) )
+                        
 
 
     # Take the system from the current state 

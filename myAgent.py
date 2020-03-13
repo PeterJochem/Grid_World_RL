@@ -9,8 +9,8 @@ import numpy as np
 
 
 # Create our grid
-length = 5
-width =  5
+length = 10
+width =  10
 goalX = 2
 goalY = 1
 currentX = 0
@@ -20,7 +20,7 @@ currentY = 0
 myGrid = gridWorld.grid(length, width, currentX, currentY, goalX, goalY)
 
 # Hyper parameters
-discount = 0.65
+discount = 0.90
 learning_rate = 0.80
 epsilon = 0.1
 epsilonDecay = 1.0
