@@ -6,19 +6,16 @@ I created a grid world, similiar to OpenAI gym's, and implemented basic two Q-Le
 
 
 # Results
-Describe the Video here
-[![]()(https://www.youtube.com/watch?v=NLY9B3Y2eho  "My Agent Learning to Reach the Green Block")
-
-
+This is a link to a video of the agent learning to reach the white goal state. The blue channel of the grid cell is proportional to the agent's expected discounted reward
 [![](images/Q_Table_T2.png)](https://www.youtube.com/watch?v=NLY9B3Y2eho "Q-Learning in GridWorld")
 
 
 
 ### Tensorflow and Virtual Env Setup Instructions
-Instructions on how to setup Tensorflow and the virtual enviroment
+It is easiest to run Tensorflow from a virtual enviroment on Linux. Here are instructions on how to setup Tensorflow and the virtual enviroment
 https://linuxize.com/post/how-to-install-tensorflow-on-ubuntu-18-04/
 
-Run this at the command line to activate the virtual enviroment
-source venv/bin/activate
+To activate the virtual enviroment:  ```source venv/bin/activate```
+
 
 
