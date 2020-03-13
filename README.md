@@ -20,3 +20,6 @@ https://linuxize.com/post/how-to-install-tensorflow-on-ubuntu-18-04/
 source venv/bin/activate
 
 
+How to run virtual enviroment in jupyter notebook
+https://janakiev.com/blog/jupyter-virtual-envs/
+
