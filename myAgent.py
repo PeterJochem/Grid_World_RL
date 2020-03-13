@@ -20,7 +20,7 @@ currentY = 0
 myGrid = gridWorld.grid(length, width, currentX, currentY, goalX, goalY)
 
 # Hyper parameters
-discount = 0.99
+discount = 0.65
 learning_rate = 0.80
 epsilon = 0.1
 epsilonDecay = 1.0
@@ -37,7 +37,7 @@ currentX_p = currentX
 for game_num in range(numGames):
     
     for i in range(10000):
-        myGrid.render()
+        myGrid.render(Q_Table)
         
         # Record the true maximum action so that we can check if it has changed 
         # and if it has changed, then change the arrow in the GUI
@@ -64,10 +64,7 @@ for game_num in range(numGames):
         
         if ( action_final != original_max ):
             # Change the arrow direction
-            #if ( (currentY_p != goalY) and (currentX_p != goalX)  ):
             myGrid.changeArrow(currentX_p, currentY_p, action_final)
-            # myGrid.changeArrow(currentX, currentY, action_final)
-            pass
 
         if ( isOver == True ):
             myGrid.reset()

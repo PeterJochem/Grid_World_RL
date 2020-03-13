@@ -11,7 +11,7 @@ class arrow:
             
         self.window = window
         
-        self.color = "blue"
+        self.color = "white"
         self.width = 2
 
         # This descirbes which direction the arrow is currently pointing
@@ -235,9 +235,8 @@ class grid:
             
         self.render_setup()
 
-
+    # Restart the agent in a random location
     def reset(self):
-         # Put it into a random location??????
          newStartY = random.randint(0, self.length - 1)
          newStartX = random.randint(0, self.width - 1)
          self.current_position = np.array([newStartY, newStartX])
@@ -362,7 +361,7 @@ class grid:
                          self.rectangles[i][j].setFill("blue")
 
                     elif( (i == self.goalY) and (j == self.goalX) ):
-                         self.rectangles[i][j].setFill("green")
+                         self.rectangles[i][j].setFill("white")
                     else:
                         self.rectangles[i][j].setFill("white")
                     
@@ -386,8 +385,17 @@ class grid:
 
 
     # This method will draw the current state of the system
-    def render(self):
+    def render(self, Q_Table):
         
+        # Cool purple/blue color
+        # customColor = color_rgb(128, 0, 255)
+        
+        maxValue = 1
+        for i in range(4):
+            for j in range( 4 ):
+                maxValue = np.amax(Q_Table[i, j, :] ) + 1
+             
+
         # Traverse the list of the rectangles to change their fill colors
         if ( self.window != None ):
             for i in  range( len( self.rectangles  ) ):
@@ -397,10 +405,17 @@ class grid:
                          self.rectangles[i][j].setFill("blue")
 
                     elif( (i == self.goalY) and (j == self.goalX) ):
-                         self.rectangles[i][j].setFill("green")
+                         self.rectangles[i][j].setFill("white")
                     else:
-                        self.rectangles[i][j].setFill("white")
-    
+                        # customColor = color_rgb(128, 0, 255)
+                        current_value = np.amax(Q_Table[i, j, :] )
+                        
+                        colorValue = int(current_value * 0.7)
+                        if (colorValue > 255):
+                            colorValue = 254
+
+                        self.rectangles[i][j].setFill( color_rgb(0, 0, colorValue ) )
+
 
     # Take the system from the current state 
     # to the state after doing the given action
