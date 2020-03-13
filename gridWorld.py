@@ -245,8 +245,13 @@ class grid:
         
     # Describe method here
     def convertToInput(self, current_X, current_Y):
+    
+        
+        # value = np.zeros(self.length * self.width)
+        #value[current_Y * self.width + current_X] = 1
+        
 
-        return np.array([current_Y * self.width + current_X])
+        return np.array( [current_Y * self.width + current_X] )
 
     
     # Describe here
@@ -463,9 +468,9 @@ class grid:
             self.moveDown()
 
         # Compute the given reward function
-        reward = 0
+        reward = -1
         if ( ( (self.goalY == self.current_position[0] ) and (self.goalX == self.current_position[1] ) ) ):
-            reward = 40
+            reward = 1
             print("Game Won")
             self.isOver = True
 
