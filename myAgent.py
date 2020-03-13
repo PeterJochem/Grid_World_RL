@@ -43,7 +43,7 @@ Q_value.compile(loss='mse',
 
 
 # This defines how much data to generate before training
-batch_size = 30
+batch_size = 20
 
 # These will hold the in/out data pairs
 training_labels = []
@@ -100,7 +100,7 @@ for game_num in range(1, numGames):
         
         input_data = np.array(input_data)
         training_labels = np.array(training_labels)
-        Q_value.fit(input_data, training_labels, epochs = 5)
+        Q_value.fit(input_data, training_labels, epochs = 12)
         
         # Traverse the grid and redraw the arrows
         for i in range( myGrid.length):
