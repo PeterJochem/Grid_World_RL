@@ -256,7 +256,13 @@ class grid:
     # needed for the neural network
     def convertToInput(self, current_X, current_Y):
         
-        return np.array( [current_Y * self.width + current_X] )
+        myArray = np.zeros( 36, )
+        
+        myArray[current_Y * self.width + current_X] = 1.0
+
+        return np.array( [ myArray ] )
+        # return myArray    
+        # return np.array( [current_Y * self.width + current_X] )
 
 
     # This method resets the agent to a random initial start state 
