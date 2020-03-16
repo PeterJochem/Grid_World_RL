@@ -10,11 +10,11 @@ from tensorflow import keras
 
 
 # Create our grid
-length = 2
-width =  3
+length = 5
+width =  5
 
-goalX = 0
-goalY = 1
+goalX = 2
+goalY = 2
 
 currentX = 0
 currentY = 0
@@ -29,8 +29,8 @@ numGames = 100000
 
 # Create the neural network
 Q_value = keras.Sequential([
-    keras.layers.Dense(10, input_shape = (1, ) ),
-    keras.layers.Dense(10),
+    keras.layers.Dense(50, input_shape = (1, ) ),
+    keras.layers.Dense(50),
     keras.layers.Dense(4)
 ])
 
@@ -52,7 +52,7 @@ input_data = []
 # This defines the explore rate
 epsilon = 0.2
 # This defines the rate at which epsilon (ie the explore rate) will decay
-epsilonDecay = 0.95
+epsilonDecay = 1.0
 
 # Prior state tracking
 currentY_p = currentY
