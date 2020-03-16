@@ -2,7 +2,6 @@ import numpy as np
 from graphics import *
 import random
 
-
 # Describe here
 class arrow:
 
