@@ -7,7 +7,6 @@ import tensorflow as tf
 from tensorflow import keras
 import numpy as np
 
-
 # Create our grid
 length = 10
 width =  10
@@ -45,7 +44,6 @@ for game_num in range(numGames):
 
         # This returns the index of the max value in the numpy array
         action = np.argmax(Q_Table[currentY, currentX, :] +  np.random.randn(1, 4) * (1.0/ ( game_num + 1.0 ) ) ) 
-        #action = np.argmax(Q_Table[currentY, currentX, :] )
 
         # Explore or not?
         if ( epsilon > random.random() ):
@@ -57,7 +55,8 @@ for game_num in range(numGames):
 
         # Make updates to the Q table
         current_reward, isOver, currentX, currentY = myGrid.step(action)
-
+    
+        # Update the table
         Q_Table[currentY_p, currentX_p, action] = Q_Table[currentY_p, currentX_p, action] + ( (learning_rate) * ( current_reward + discount * np.max(Q_Table[currentY, currentX, :] )  - Q_Table[currentY_p, currentX_p, action] ) )
     
         action_final = np.argmax(Q_Table[currentY_p, currentX_p, :] )
