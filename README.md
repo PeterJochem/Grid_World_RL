@@ -2,14 +2,14 @@
 All it requires is Python 3 \n
 
 # Description
-I created a grid world, similiar to OpenAI gym's, and implemented basic Q-Learning. 
+I created a grid world, similiar to OpenAI gym's, and implemented basic Q-Learning and DeepQ Learning. 
 
 
 # Video
-Describe the Video here
+This is a video of the Q-Table approach learning a policy
 [![]()(https://www.youtube.com/watch?v=NLY9B3Y2eho  "My Agent Learning to Reach the Green Block")
 
-
+This is the final policy learned by the Q-Table agent
 [![](GridWorld.png)](https://www.youtube.com/watch?v=NLY9B3Y2eho "Q-Learning in GridWorld")
 
 
