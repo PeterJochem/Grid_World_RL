@@ -5,7 +5,12 @@ All it requires is Python 3 and Tensorflow/Keras. To run my code, execute ```pyt
 I created a grid world, similiar to OpenAI gym's, and implemented basic two Q-Learning algorithms. First, I implemented Q-Learning using a Q-table. I then implemented Q-Learning using a neural network to store the table.
 
 # Results
-This is a link to a video of the agent learning to reach the white goal state. The blue channel of the grid cell is proportional to the agent's expected discounted reward from the given cell. (https://www.youtube.com/watch?v=0iWIOUMrzAk&feature=youtu.be)
+This is a link to a video of the agent learning to reach the white goal state. The video first shows the agent using the Q Table and then I show the agent using the neural network to learn the same function. The Q-Table code is in the master branch. The neural network Q-Learning approach is in the DeepQ branch.
+
+Below is a graphical representation of the policy learned by the Q-Table agent. The blue channel of the grid cell is proportional to the agent's expected discounted reward from the given cell. (https://www.youtube.com/watch?v=0iWIOUMrzAk&feature=youtu.be)
+[![](images/Q_Table_T2.png)](https://www.youtube.com/watch?v=0iWIOUMrzAk&feature=youtu.be "Q-Learning in GridWorld")
+
+Below is a graphical representation of the policy learned by the neural network Q-Learning agent. 
 [![](images/Q_Table_T2.png)](https://www.youtube.com/watch?v=0iWIOUMrzAk&feature=youtu.be "Q-Learning in GridWorld")
 
 ### Tensorflow and Virtual Env Setup Instructions
