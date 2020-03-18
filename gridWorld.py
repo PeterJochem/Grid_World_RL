@@ -14,8 +14,9 @@ class arrow:
             
         self.window = window
         
-        self.color = "blue"
+        self.color = "white"
         self.width = 2
+
 
         # This descirbes which direction the arrow is currently pointing
         # 0 = left
@@ -214,11 +215,14 @@ class grid:
     # length and width are the number of cells in the grid
     # currentX and currentY are the agent's initial location
     # goalX and goalY are the agent's desired location
-    def __init__(self, length, width, currentX, currentY, goalX, goalY):
+    def __init__(self, length, width, currentX, currentY, goalX, goalY, Q_value):
         
         self.startX = currentX
         self.startY = currentY
     
+        # This is the neural network
+        self.Q_value = Q_value
+
         # The agent's current position
         self.current_position = np.array([currentY, currentX])
                 
@@ -243,13 +247,21 @@ class grid:
         
         # This records if the game is over or not
         self.isOver = False
-    
+        
+        # These store the prior value and location of the agent
+        # We need to record this so that we can update graphics after 
+        # the agent has moved again without doing a forward propagation with the NN
+        # This will hold the prior value for each entry in the grid
+        self.priorValues = np.zeros(self.length * self.width)
+        self.priorX = currentX
+        self.priorY = currentY
+
         # Create a window for us to display the game's state
         self.window = GraphWin("Grid_World", self.window_length, self.window_width)
         self.window.setBackground("white")
            
         # Create the graphic's objects needed to draw board
-        self.render_setup()
+        self.render_setup(self.Q_value)
 
         
     # This method converts the agent's x, y location into the format 
@@ -261,8 +273,6 @@ class grid:
         myArray[current_Y * self.width + current_X] = 1.0
 
         return np.array( [ myArray ] )
-        # return myArray    
-        # return np.array( [current_Y * self.width + current_X] )
 
 
     # This method resets the agent to a random initial start state 
@@ -270,6 +280,21 @@ class grid:
          newStartY = random.randint(0, self.length - 1)
          newStartX = random.randint(0, self.width - 1)
          self.current_position = np.array([newStartY, newStartX])
+            
+         current_value = self.priorValues[self.priorY * self.width + self.priorX]
+         colorValue = int(current_value)
+         if (colorValue > 255):
+             colorValue = 254
+         if ( colorValue < 0):
+            colorValue = 0
+         # self.rectangles[self.priorY][self.priorX].setFill("white")
+
+         self.rectangles[self.priorY][self.priorX].setFill( color_rgb(0, 0, colorValue ) )
+
+
+         self.priorX = newStartX
+         self.priorY = newStartY
+            
          self.isOver = False
     
     # This method change's the arrow at the grid (x,y) 
@@ -351,7 +376,7 @@ class grid:
 
 
     # This method will create the graphics objects needed for the grid world
-    def render_setup(self):
+    def render_setup(self, Q_value):
 
         self.rectangles = []
         
@@ -391,13 +416,23 @@ class grid:
                     
                     # Set the rectangle's color
                     if( (i == self.current_position[0] ) and (j == self.current_position[1] ) ):
-                         self.rectangles[i][j].setFill("blue")
+                        pass 
+                        # self.rectangles[i][j].setFill("blue")
 
                     elif( (i == self.goalY) and (j == self.goalX) ):
-                         self.rectangles[i][j].setFill("green")
+                         self.rectangles[i][j].setFill("white")
                     
                     else:
-                        self.rectangles[i][j].setFill("white")
+                        current_value = np.amax( Q_value.predict( self.convertToInput(j, i) ) )
+                        colorValue = int(current_value * 220)
+                        
+                        if (colorValue > 255):
+                            colorValue = 254
+                        if ( colorValue < 0):
+                            colorValue = 0
+                           
+                        self.rectangles[i][j].setFill( color_rgb(0, 0, colorValue ) )
+
                     
                     self.rectangles[i][j].setWidth("4")
                     
@@ -420,28 +455,48 @@ class grid:
 
 
     # This method will draw the board
-    def render(self, Q_value):
+    def render(self, Q_value, update):
         
+        # Reset agent's prior location to its color 
+        #current_value = np.amax( Q_value.predict( self.convertToInput(self.priorX, self.priorY) ) )
+        current_value = self.priorValues[self.priorY * self.width + self.priorX]
+        colorValue = int(current_value)
+        if (colorValue > 255):
+            colorValue = 254
+        if ( colorValue < 0):
+            colorValue = 0
+        # self.rectangles[self.priorY][self.priorX].setFill("white")
+        
+        self.rectangles[self.priorY][self.priorX].setFill( color_rgb(0, 0, colorValue ) )
+
         # Traverse the list of the rectangles to change their fill colors
         if ( self.window != None ):
             for i in  range( len( self.rectangles  ) ):
                 for j in range( len( self.rectangles[i] ) ):
 
                     if( (i == self.current_position[0] ) and (j == self.current_position[1] ) ):
-                         self.rectangles[i][j].setFill("blue")
+                        self.priorX = j
+                        self.priorY = i
+                        # self.priorValue = self.priorValues[i * self.width+ j]  
+                        self.rectangles[i][j].setFill("blue")
 
-                    elif( (i == self.goalY) and (j == self.goalX) ):
-                         self.rectangles[i][j].setFill("green")
-                    else:
+                    if( (i == self.goalY) and (j == self.goalX) ):
+                        self.rectangles[i][j].setFill("white")
+                    
+                    elif ( update == True):
                         # customColor = color_rgb(128, 0, 255)
-                        #current_value = np.amax( Q_value.predict( self.convertToInput(j, i) ) )
-                        #colorValue = int(current_value * 200)
-                        #if (colorValue > 255):
-                        #    colorValue = 254
-                        #if ( colorValue < 0):
-                        #    colorValue = 0
-                        #self.rectangles[i][j].setFill( color_rgb(0, 0, colorValue ) )
-                        self.rectangles[i][j].setFill( "white" )
+                        # Don't update the color every time - it slows the system down too much
+                        current_value = np.amax( Q_value.predict( self.convertToInput(j, i) ) )
+                        # print(current_value)
+                        colorValue = int(current_value * 255/4)
+                        if (colorValue > 255):
+                            colorValue = 254
+                        if ( colorValue < 0):
+                            colorValue = 0
+                        
+                        self.rectangles[i][j].setFill( color_rgb(0, 0, colorValue ) )
+                        self.priorValues[i * len( self.rectangles[i] ) + j] = colorValue
+                        #self.rectangles[i][j].setFill( "white" )  
         
 
 
@@ -465,7 +520,7 @@ class grid:
             self.moveDown()
 
         # Compute the given reward function
-        reward = -1
+        reward = 0 # -1
         if ( ( (self.goalY == self.current_position[0] ) and (self.goalX == self.current_position[1] ) ) ):
             
             reward = 1

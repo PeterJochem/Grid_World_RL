@@ -16,14 +16,6 @@ goalY = width / 2
 currentX = 1
 currentY = 1
 
-# Create object to hold all the information associated with the grid
-myGrid = gridWorld.grid(length, width, currentX, currentY, goalX, goalY)
-
-discount = 0.80
-learning_rate = 0.80
-
-numGames = 100000
-
 # Define the neural network structure
 Q_value = keras.Sequential([
     keras.layers.Dense(30, input_dim = length * width ),
@@ -32,13 +24,21 @@ Q_value = keras.Sequential([
     keras.layers.Dense(4)
 ])
 
-
 # Set more of the model's parameters
 optimizer = tf.keras.optimizers.RMSprop(0.0005)
 
 Q_value.compile(loss='mse',
                 optimizer=optimizer,
                 metrics=['mae', 'mse'])
+
+# Create object to hold all the information associated with the grid
+myGrid = gridWorld.grid(length, width, currentX, currentY, goalX, goalY, Q_value)
+
+discount = 0.80
+learning_rate = 0.80
+
+numGames = 100000
+
 
 # This defines how much data to generate before training
 batch_size = 40
@@ -56,10 +56,14 @@ epsilonDecay = 0.9
 currentY_p = currentY
 currentX_p = currentX
 
+# Render once with true to set the grid's color scheme
+# based on the random, initial policy
+myGrid.render(Q_value, True)
+
 for game_num in range(1, numGames):
     
     for i in range(20):
-        myGrid.render(Q_value)
+        myGrid.render(Q_value, False)
         
         # Choose an action
         # 0 - 4 is left, right, up, down
@@ -117,6 +121,10 @@ for game_num in range(1, numGames):
                 # Re-draw arrow  
                 myGrid.changeArrow(j, i, action)
         
+        # Redraw the new colors
+        myGrid.render(Q_value, True)
+    
+
         # Let the epsilon rate decay - i.e. explore less
         epsilon = epsilon * epsilonDecay
 
