@@ -268,7 +268,7 @@ class grid:
     # needed for the neural network
     def convertToInput(self, current_X, current_Y):
         
-        myArray = np.zeros( 36, )
+        myArray = np.zeros( 100, )
         
         myArray[current_Y * self.width + current_X] = 1.0
 

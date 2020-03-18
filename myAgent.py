@@ -7,8 +7,8 @@ import tensorflow as tf
 from tensorflow import keras
 
 # Create our grid
-length = 6
-width =  6
+length = 10
+width =  10
 
 goalX = length / 2
 goalY = width / 2
