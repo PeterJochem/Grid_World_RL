@@ -11,7 +11,7 @@ Below is a graphical representation of the policy learned by the Q-Table agent. 
 [![](images/Q_Table_T2.png)](https://www.youtube.com/watch?v=0iWIOUMrzAk&feature=youtu.be "Q-Learning in GridWorld")
 
 Below is a graphical representation of the policy learned by the neural network Q-Learning agent. 
-[![](DeepQ/NN_Policy_Large.png)](https://github.com/PeterJochem/Grid_World_RL/blob/DeepQ/NN_Large.png "Neural Network Q-Learning in GridWorld")
+[![](https://github.com/PeterJochem/Grid_World_RL/blob/master/NN_Large.png)](https://github.com/PeterJochem/Grid_World_RL/blob/master/NN_Large.png "Neural Network Q-Learning in GridWorld")
 
 ### Tensorflow and Virtual Env Setup Instructions
 It is easiest to run Tensorflow from a virtual enviroment on Linux. Here are instructions on how to setup Tensorflow and the virtual enviroment
