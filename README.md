@@ -7,8 +7,8 @@ I created a grid world, similiar to OpenAI gym's, and implemented basic two Q-Le
 # Results
 This is a link to a video of the agent learning to reach the white goal state. The video first shows the agent using the Q Table and then I show the agent using the neural network to learn the same function. The Q-Table code is in the master branch. The neural network Q-Learning approach is in the DeepQ branch.
 
-Below is a graphical representation of the policy learned by the Q-Table agent. The blue channel of the grid cell is proportional to the agent's expected discounted reward from the given cell. (https://www.youtube.com/watch?v=0iWIOUMrzAk&feature=youtu.be)
-[![](images/Q_Table_T2.png)](https://www.youtube.com/watch?v=0iWIOUMrzAk&feature=youtu.be "Q-Learning in GridWorld")
+Below is a graphical representation of the policy learned by the Q-Table agent. The blue channel of the grid cell is proportional to the agent's expected discounted reward from the given cell. (https://youtu.be/LNs2SGXHrwg)
+[![](images/Q_Table_T2.png)](https://youtu.be/LNs2SGXHrwg "Q-Learning in GridWorld")
 
 Below is a graphical representation of the policy learned by the neural network Q-Learning agent. 
 [![](https://github.com/PeterJochem/Grid_World_RL/blob/master/NN_Large.png)](https://github.com/PeterJochem/Grid_World_RL/blob/master/NN_Large.png "Neural Network Q-Learning in GridWorld")
